@@ -62,7 +62,9 @@ int main() {
         else if (choice == 2) displayPriorityQueue();
         else if (choice == 3) generateAnalytics();
         else if (choice == 4) {
-            printf("Exiting program...\n");
+        printf("\n============================================\n");
+        printf("  Thank you for using Smart Hospital System!  \n");
+        printf("============================================\n");
         } else {
             printf("Invalid choice! Try again.\n");
         }
