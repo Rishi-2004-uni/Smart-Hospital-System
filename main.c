@@ -145,9 +145,13 @@ void registerPatient() {
     scanf(" %[^\n]", patientNames[i]);
     printf("Enter Patient Age: ");
     scanf("%d", &patientAges[i]);
+    do {
     printf("Enter Urgency Level (1-Normal, 2-Urgent, 3-Critical): ");
     scanf("%d", &urgencyLevels[i]);
-
+    if (urgencyLevels[i] < 1 || urgencyLevels[i] > 3) {
+        printf("Invalid input! Please enter 1, 2, or 3.\n");
+    }
+} while (urgencyLevels[i] < 1 || urgencyLevels[i] > 3);
     printf("Select Specialty (1-OPD, 2-Paediatrics, 3-Cardiology, 4-Neurology): ");
     scanf("%d", &selectedSpecialties[i]);
 
