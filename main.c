@@ -46,6 +46,33 @@ int allocateBed(int wardIdx) {
     }
     return -1;
 }
+void calculateBilling(int i) {
+    int s = selectedSpecialties[i] - 1;
+    baseFeesList[i] = BASE_FEES[s];
+
+    if (urgencyLevels[i] == 2) surchargesList[i] = baseFeesList[i] * 0.20;
+    else if (urgencyLevels[i] == 3) surchargesList[i] = baseFeesList[i] * 0.50;
+    else surchargesList[i] = 0.0;
+
+    if (isAdmittedList[i] == 1) {
+        wardCostsList[i] = daysAdmittedList[i] * WARD_RATES[selectedWards[i] - 1];
+    } else {
+        wardCostsList[i] = 0.0;
+    }
+
+    double grossTotal = baseFeesList[i] + surchargesList[i] + wardCostsList[i];
+
+    if (patientAges[i] < 5 || patientAges[i] > 65) {
+        discountsList[i] = grossTotal * 0.15;
+    } else {
+        discountsList[i] = 0.0;
+    }
+
+    finalPayables[i] = grossTotal - discountsList[i];
+
+    waitingTimes[i] = specialtyQueueCount[s] * CONSULTATION_TIMES[s];
+    specialtyQueueCount[s]++;
+}
 
 int main() {
     printf("=== Smart Hospital Patient & Resource Allocation System ===\n");
