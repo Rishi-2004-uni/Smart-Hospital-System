@@ -211,7 +211,16 @@ void generateAnalytics() {
     printf("\n5. Highest Paying Patient:\n");
     printf("   - PAT-%d (%s) : LKR %.2f\n", patientIDs[maxIdx], patientNames[maxIdx], finalPayables[maxIdx]);
     printf("============================================\n");
-}int main() {
+}
+
+int allocateBed(int wardIdx);
+void calculateBilling(int i);
+void printPatientBill(int i);
+void registerPatient();
+void displayPriorityQueue();
+void generateAnalytics();
+
+int main() {
     int choice;
 
     do {
