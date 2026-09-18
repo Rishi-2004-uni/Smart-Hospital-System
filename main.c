@@ -74,32 +74,72 @@ void calculateBilling(int i) {
     specialtyQueueCount[s]++;
 }
 
-void calculateBilling(int i) {
+void printPatientBill(int i) {
     int s = selectedSpecialties[i] - 1;
-    baseFeesList[i] = BASE_FEES[s];
+    printf("\n============================================\n");
+    printf("             PATIENT BILL & ADMISSION       \n");
+    printf("============================================\n");
+    printf("Patient ID         : PAT-%d\n", patientIDs[i]);
+    printf("Name               : %s\n", patientNames[i]);
+    printf("Specialty          : %s\n", SPECIALTY_NAMES[s]);
+    if (isAdmittedList[i] == 1) {
+        printf("Ward & Bed         : %s (Bed #%d)\n", WARD_NAMES[selectedWards[i] - 1], assignedBeds[i]);
+    } else {
+        printf("Ward               : None (Outpatient)\n");
+    }
+    printf("Base Fee           : LKR %.2f\n", baseFeesList[i]);
+    printf("Emergency Surcharge: LKR %.2f\n", surchargesList[i]);
+    printf("Ward Stay Cost     : LKR %.2f\n", wardCostsList[i]);
+    printf("Age Subsidy Discount: LKR -%.2f\n", discountsList[i]);
+    printf("--------------------------------------------\n");
+    printf("Final Payable      : LKR %.2f\n", finalPayables[i]);
+    printf("Estimated Wait Time: %.0f mins\n", waitingTimes[i]);
+    printf("============================================\n");
+}
 
-    if (urgencyLevels[i] == 2) surchargesList[i] = baseFeesList[i] * 0.20;
-    else if (urgencyLevels[i] == 3) surchargesList[i] = baseFeesList[i] * 0.50;
-    else surchargesList[i] = 0.0;
+void registerPatient() {
+    if (patientCount >= MAX) {
+        printf("Hospital Capacity Full!\n");
+        return;
+    }
+    int i = patientCount;
+    patientIDs[i] = 1001 + i;
+
+    printf("\n--- Patient Registration (PAT-%d) ---\n", patientIDs[i]);
+    printf("Enter Patient Name: ");
+    scanf(" %[^\n]", patientNames[i]);
+    printf("Enter Patient Age: ");
+    scanf("%d", &patientAges[i]);
+    printf("Enter Urgency Level (1-Normal, 2-Urgent, 3-Critical): ");
+    scanf("%d", &urgencyLevels[i]);
+
+    printf("Select Specialty (1-OPD, 2-Paediatrics, 3-Cardiology, 4-Neurology): ");
+    scanf("%d", &selectedSpecialties[i]);
+
+    printf("Admit to Ward? (1-Yes, 0-No): ");
+    scanf("%d", &isAdmittedList[i]);
 
     if (isAdmittedList[i] == 1) {
-        wardCostsList[i] = daysAdmittedList[i] * WARD_RATES[selectedWards[i] - 1];
-    } else {
-        wardCostsList[i] = 0.0;
+        printf("Select Ward (1-General, 2-Paediatric, 3-Surgical, 4-ICU): ");
+        scanf("%d", &selectedWards[i]);
+        printf("Enter Days Admitted: ");
+        scanf("%d", &daysAdmittedList[i]);
+
+        int w = selectedWards[i] - 1;
+        assignedBeds[i] = allocateBed(w);
+
+        if (assignedBeds[i] == -1) {
+            printf("Selected Ward is Full! Patient treated as Outpatient.\n");
+            isAdmittedList[i] = 0;
+            selectedWards[i] = 0;
+            daysAdmittedList[i] = 0;
+        }
     }
 
-    double grossTotal = baseFeesList[i] + surchargesList[i] + wardCostsList[i];
+    calculateBilling(i);
+    printPatientBill(i);
 
-    if (patientAges[i] < 5 || patientAges[i] > 65) {
-        discountsList[i] = grossTotal * 0.15;
-    } else {
-        discountsList[i] = 0.0;
-    }
-
-    finalPayables[i] = grossTotal - discountsList[i];
-
-    waitingTimes[i] = specialtyQueueCount[s] * CONSULTATION_TIMES[s];
-    specialtyQueueCount[s]++;
+    patientCount++;
 }
 
 int main() {
