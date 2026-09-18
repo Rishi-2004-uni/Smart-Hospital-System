@@ -73,7 +73,7 @@ int main() {
     return 0;
 }
 
-
+// [REQ-1] Bed Allocation Logic
 int allocateBed(int wardIdx) {
     for (int b = 0; b < WARD_CAPACITIES[wardIdx]; b++) {
         if (bedOccupancy[wardIdx][b] == 0) {
@@ -83,6 +83,7 @@ int allocateBed(int wardIdx) {
     }
     return -1;
 }
+// [REQ-2] Billing and Subsidy Calculation
 void calculateBilling(int i) {
     int s = selectedSpecialties[i] - 1;
     baseFeesList[i] = BASE_FEES[s];
@@ -110,7 +111,7 @@ void calculateBilling(int i) {
     waitingTimes[i] = specialtyQueueCount[s] * CONSULTATION_TIMES[s];
     specialtyQueueCount[s]++;
 }
-
+// [REQ-3] Receipt Generation
 void printPatientBill(int i) {
     int s = selectedSpecialties[i] - 1;
     printf("\n============================================\n");
@@ -133,7 +134,7 @@ void printPatientBill(int i) {
     printf("Estimated Wait Time: %.0f mins\n", waitingTimes[i]);
     printf("============================================\n");
 }
-
+// [REQ-4] Patient Intake Registration
 void registerPatient() {
     if (patientCount >= MAX) {
         printf("Hospital Capacity Full!\n");
@@ -182,7 +183,7 @@ void registerPatient() {
 
     patientCount++;
 }
-
+// [REQ-5] Triage Priority Sorting
 void displayPriorityQueue() {
     if (patientCount == 0) {
         printf("\nNo registered patients available!\n");
@@ -214,7 +215,7 @@ void displayPriorityQueue() {
     }
     printf("============================================\n");
 }
-
+// [REQ-6] Hospital Analytics
 void generateAnalytics() {
     if (patientCount == 0) {
         printf("\nNo data available to generate analytics!\n");
