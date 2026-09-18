@@ -142,6 +142,38 @@ void registerPatient() {
     patientCount++;
 }
 
+void displayPriorityQueue() {
+    if (patientCount == 0) {
+        printf("\nNo registered patients available!\n");
+        return;
+    }
+
+    int indices[MAX];
+    for (int i = 0; i < patientCount; i++) indices[i] = i;
+
+    for (int i = 0; i < patientCount - 1; i++) {
+        int maxIdx = i;
+        for (int j = i + 1; j < patientCount; j++) {
+            if (urgencyLevels[indices[j]] > urgencyLevels[indices[maxIdx]]) {
+                maxIdx = j;
+            }
+        }
+        int temp = indices[i];
+        indices[i] = indices[maxIdx];
+        indices[maxIdx] = temp;
+    }
+
+    printf("\n============================================\n");
+    printf("          TRIAGE PRIORITY QUEUE             \n");
+    printf("============================================\n");
+    for (int k = 0; k < patientCount; k++) {
+        int idx = indices[k];
+        printf("ID: PAT-%d | Name: %-15s | Urgency: Level %d | Bill: LKR %.2f\n",
+               patientIDs[idx], patientNames[idx], urgencyLevels[idx], finalPayables[idx]);
+    }
+    printf("============================================\n");
+}
+
 int main() {
     printf("=== Smart Hospital Patient & Resource Allocation System ===\n");
     return 0;
