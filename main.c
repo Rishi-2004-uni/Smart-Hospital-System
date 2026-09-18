@@ -174,6 +174,45 @@ void displayPriorityQueue() {
     printf("============================================\n");
 }
 
+void generateAnalytics() {
+    if (patientCount == 0) {
+        printf("\nNo data available to generate analytics!\n");
+        return;
+    }
+
+    double totalRevenue = 0, totalDiscounts = 0;
+    int maxIdx = 0;
+
+    for (int i = 0; i < patientCount; i++) {
+        totalRevenue += finalPayables[i];
+        totalDiscounts += discountsList[i];
+        if (finalPayables[i] > finalPayables[maxIdx]) {
+            maxIdx = i;
+        }
+    }
+
+    printf("\n============================================\n");
+    printf("          HOSPITAL ANALYTICS REPORT         \n");
+    printf("============================================\n");
+    printf("1. Total Patients Registered: %d\n", patientCount);
+    printf("2. Total Revenue Earned     : LKR %.2f\n", totalRevenue);
+    printf("3. Total Discounts Given    : LKR %.2f\n", totalDiscounts);
+
+    printf("\n4. Bed Occupancy Rates:\n");
+    for (int w = 0; w < 4; w++) {
+        int occupied = 0;
+        for (int b = 0; b < WARD_CAPACITIES[w]; b++) {
+            if (bedOccupancy[w][b] == 1) occupied++;
+        }
+        double percentage = ((double)occupied / WARD_CAPACITIES[w]) * 100.0;
+        printf("   - %-15s: %d/%d (%.1f%%)\n", WARD_NAMES[w], occupied, WARD_CAPACITIES[w], percentage);
+    }
+
+    printf("\n5. Highest Paying Patient:\n");
+    printf("   - PAT-%d (%s) : LKR %.2f\n", patientIDs[maxIdx], patientNames[maxIdx], finalPayables[maxIdx]);
+    printf("============================================\n");
+}
+
 int main() {
     printf("=== Smart Hospital Patient & Resource Allocation System ===\n");
     return 0;
