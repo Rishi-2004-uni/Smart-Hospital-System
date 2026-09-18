@@ -37,6 +37,16 @@ double waitingTimes[MAX];
 
 int patientCount = 0;
 
+int allocateBed(int wardIdx) {
+    for (int b = 0; b < WARD_CAPACITIES[wardIdx]; b++) {
+        if (bedOccupancy[wardIdx][b] == 0) {
+            bedOccupancy[wardIdx][b] = 1;
+            return b + 1;
+        }
+    }
+    return -1;
+}
+
 int main() {
     printf("=== Smart Hospital Patient & Resource Allocation System ===\n");
     return 0;
