@@ -37,6 +37,41 @@ double waitingTimes[MAX];
 
 int patientCount = 0;
 
+int allocateBed(int wardIdx);
+void calculateBilling(int i);
+void printPatientBill(int i);
+void registerPatient();
+void displayPriorityQueue();
+void generateAnalytics();
+
+int main() {
+    int choice;
+
+    do {
+        printf("\n============================================\n");
+        printf("=== Smart Hospital Patient & Resource Allocation System ===\n");
+        printf("============================================\n");
+        printf("1. Register Patient & Generate Bill\n");
+        printf("2. View Emergency Priority Queue\n");
+        printf("3. View Analytics & Performance Report\n");
+        printf("4. Exit\n");
+        printf("Enter Choice (1-4): ");
+        scanf("%d", &choice);
+
+        if (choice == 1) registerPatient();
+        else if (choice == 2) displayPriorityQueue();
+        else if (choice == 3) generateAnalytics();
+        else if (choice == 4) {
+            printf("Exiting program...\n");
+        } else {
+            printf("Invalid choice! Try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+
+
 int allocateBed(int wardIdx) {
     for (int b = 0; b < WARD_CAPACITIES[wardIdx]; b++) {
         if (bedOccupancy[wardIdx][b] == 0) {
@@ -211,40 +246,6 @@ void generateAnalytics() {
     printf("\n5. Highest Paying Patient:\n");
     printf("   - PAT-%d (%s) : LKR %.2f\n", patientIDs[maxIdx], patientNames[maxIdx], finalPayables[maxIdx]);
     printf("============================================\n");
-}
-
-int allocateBed(int wardIdx);
-void calculateBilling(int i);
-void printPatientBill(int i);
-void registerPatient();
-void displayPriorityQueue();
-void generateAnalytics();
-
-int main() {
-    int choice;
-
-    do {
-        printf("\n============================================\n");
-        printf("=== Smart Hospital Patient & Resource Allocation System ===\n");
-        printf("============================================\n");
-        printf("1. Register Patient & Generate Bill\n");
-        printf("2. View Emergency Priority Queue\n");
-        printf("3. View Analytics & Performance Report\n");
-        printf("4. Exit\n");
-        printf("Enter Choice (1-4): ");
-        scanf("%d", &choice);
-
-        if (choice == 1) registerPatient();
-        else if (choice == 2) displayPriorityQueue();
-        else if (choice == 3) generateAnalytics();
-        else if (choice == 4) {
-            printf("Exiting program...\n");
-        } else {
-            printf("Invalid choice! Try again.\n");
-        }
-    } while (choice != 4);
-
-    return 0;
 }
 
 
